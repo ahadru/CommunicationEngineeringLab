@@ -1,8 +1,6 @@
 clear;
-clc;
-close;
 
-bits = [0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0];
+bits = [0,1,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,1,0];
 
 bit_rate=1;
 voltage=5;
@@ -10,27 +8,26 @@ tmp = voltage;
 sign = -1;
 mrk = 1;
 voltage = sign*voltage;
-cn=0;
+cn0=0;
 cn1=0;
+in = 0;
 
 for i = 1:length(bits)
+    
     if bits(i) == 0
-        cn = cn+1;
+        cn0 = cn0+1;
     else
         cn1=cn1+1;
-        cn=0;
+        cn0=0;
     end
     
-    if cn>3
-        if mod(cn1,2)==0
-            y_level(i) = -voltage;
-            voltage=y_level(i);
-            y_level(i-3) = voltage;
-        else
-            y_level(i) = voltage;
-        end
-        cn=0;
-        cn1=0;
+    if cn0>7
+        y_level(i-4) = voltage;
+        y_level(i-3) = -voltage;
+        y_level(i-1) = -voltage;
+        y_level(i) = voltage;
+        cn0=0;
+        c1=0;
     elseif bits(i)==0
         y_level(i) = 0;
     else 
@@ -41,9 +38,8 @@ end
 
 voltage=tmp;
 Time=length(bits)/bit_rate; 
-sampling_frequency = 1000;
-sampling_period = 1/sampling_frequency;
-time = 0:sampling_period:Time;
+frequency = 1000;
+time = 0:.01:Time;
 x = 1;
 
 for i = 1:length(time)
@@ -59,26 +55,36 @@ axis([0 Time -voltage-2 voltage+2]);
 
 % demodulation
 
+
+
+% demodulation
+
 i=1;
 in=1;
 tmp=sign;
+mr = 1;
+in1 = -1;
 
 for j=1:length(time)
-  dm = y_value(j)/voltage;
-  if time(j)*bit_rate>=in
-      if dm==0
+  dm(i) = y_value(j)/voltage;
+  if time(j)*bit_rate>=i 
+      if dm(i)==0
         ans_bits(in)=0;
       else
-        ans_bits(in)=1;
-        if tmp==dm&&in>3
+        if in~=in1+1
+            ans_bits(in)=1;
+        end
+        if tmp== dm(i)&&i>8;
+            in1 = in;
             ans_bits(in) = 0;
-            ans_bits(in-3) = 0;
+            ans_bits(in+1) = 0;
         end
       end 
       
-      if dm~=0
-        tmp = dm;
+      if dm(i)~=0
+        tmp = dm(i);
       end
+      i=i+1;
       in= in+1;
   end
 end
