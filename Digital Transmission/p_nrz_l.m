@@ -3,7 +3,7 @@ subplot(311);
 stem(input_bits,'c','LineWidth',1);
 title('Inputs');
 
-bitrate = 2;
+bitrate = 1;
 T = length(input_bits)/bitrate;
 n = 200;
 N = n*length(input_bits);
@@ -24,11 +24,13 @@ plot(t,signal,'g','LineWidth',2);
 title('Signal');
   
 %demodulation
-output_bits = zeros(1,length(bits));
+output_bits = zeros(1,length(input_bits));
 for i = 0:length(input_bits)-1
-    output_bits(i+1) = signal(i*n+1);
+    if signal(i*n+1) == 1
+        output_bits(i+1) = 1;
+    end        
 end 
 
 subplot(313);
-stem(input_bits,'b','LineWidth',1);
+stem(output_bits,'b','LineWidth',1);
 title('Outputs');  

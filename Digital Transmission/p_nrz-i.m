@@ -29,7 +29,7 @@ xlabel('Time');
 ylabel('Polarity');
   
 %demodulation
-output_bits = zeros(1,length(bits));
+output_bits = zeros(1,length(input_bits));
 if signal(1) == base_polarity
     output_bits(1) = 0;
 else
@@ -46,4 +46,3 @@ end
 subplot(313);
 stem(output_bits,'b','LineWidth',1);
 title('Outputs'); 
-disp(output_bits);
