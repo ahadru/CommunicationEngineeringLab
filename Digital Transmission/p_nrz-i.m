@@ -1,9 +1,10 @@
 input_bits = [1 0 1 1 1 0 0 1 0 0 1];
+bitrate = 1;
+
 subplot(311);
 stem(input_bits,'c','LineWidth',1);
 title('Inputs');
 
-bitrate = 1;
 T = length(input_bits)/bitrate;
 n = 200;
 N = n*length(input_bits);
