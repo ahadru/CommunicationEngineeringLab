@@ -11,7 +11,7 @@ vm = 5;
 vc = 5;
 fM = 10;
 fc = 30;
-m = 10
+m = 10;
 msg = vm*sin(2*pi*fM*t);
 subplot(3,1,1); %plotting message signal
 plot(t,msg);
